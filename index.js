@@ -54,9 +54,19 @@ function displayYouTubeSearchData(data) {
 function showResults(result) {
     var html = " ";
     $.each(result, function(index, value) {
-        var title = value.snippet.title;
-        var videoLink = "https://www.youtube.com/watch?v=" + value.id.videoId;
-        html += `<div><h3>${value.snippet.title}</h3><img src="${value.snippet.thumbnails.default.url}"/><a href="${videoLink}">${videoLink}</a><p>${value.snippet.description}</p><p>${value.snippet.publishedAt}</p></div>`;
+        if(value.id.videoId) {
+            var title = value.snippet.title;
+            var videoLink = "https://www.youtube.com/watch?v=" + value.id.videoId;
+            html += `<div><h3>${value.snippet.title}</h3><img src="${value.snippet.thumbnails.default.url}"/><a href="${videoLink}">${videoLink}</a><p>${value.snippet.description}</p><p>${value.snippet.publishedAt}</p></div>`;
+        }
+        if(value.id.channelId) {
+            var title = value.snippet.channelTitle;
+            var chanTitle = title.split(' ');
+            var cT = '';
+            chanTitle.forEach(val => cT += val);
+            var videoLink = "https://www.youtube.com/user/" + cT;
+            html += `<div><h3>${value.snippet.channelTitle}</h3><img src="${value.snippet.thumbnails.default.url}"/><a href="${videoLink}">${videoLink}</a><p>${value.snippet.description}</p><p>${value.snippet.publishedAt}</p></div>`;
+        }
     })
 	$('#js-search-results').html(html);
 	 console.log(html);
